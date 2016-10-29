@@ -270,11 +270,11 @@ local function unlock_group_flood(msg, data, target)
   end
 end
 
-local function lock_group_arabic(msg, data, target)
+local function load_data(_config.moderation.data)
   if not is_momod(msg) then
     return
   end
-  local group_arabic_lock = data[tostring(target)]['settings']['lock_arabic']
+  local group_arabic_lock = data[tostring(msg.to.id)]['settings']['lock_badw']
   if group_arabic_lock == 'yes' then
     return 'عربی و فارسی از قبل قفل بوده است'
   else
@@ -1268,7 +1268,7 @@ local function run(msg, matches)
 				resolve_username(username,  callbackres, cbres_extra)
 			else
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup ID")
-				return "SuperGroup ID for " ..string.gsub(msg.to.print_name, "_", " ").. ":\n\n"..msg.to.id
+				return " ایدی گروه  " ..string.gsub(msg.to.print_name, "_", " ").. ":\n\n"..msg.to.id
 			end
 		end
 
@@ -1963,8 +1963,8 @@ local function run(msg, matches)
 			return get_rules(msg, data)
 		end
 
-		if matches[1] == 'راهنما' and not is_owner(msg) then
-			text = "دستور راهنما فقط برای ادمین کار میکند : \n ادمین : \n @negative_officiall"
+		if matches[1] == 'راهنما' and is_owner(msg) then
+			text = "!wiki [متن] : \n سرچ ویکی پدیا : \n   : \n	!google [متن جست و جو] : \n جست و جو در گوگل : \n   : \n  !azan : \n  ساعات اذان به وقت تهران : \n   : \n  !info : \n  مشخصات شما : \n   : \n @TeleGuardTM"
 			reply_msg(msg.id, text, ok_cb, false)
 		elseif matches[1] == 'راهنما' and is_owner(msg) then
 			local name_log = user_print_name(msg.from)
@@ -2068,8 +2068,8 @@ return {
 	"^(افزودن عکس)$",
 	"^[#!/]([Ss]etusername) (.*)$",
 	"^(حذف)$",
-	"^(قفل) (.*)$",
 	"^(باز کردن) (.*)$",
+	"^(قفل) (.*)$",
 	"^(سایلنت) ([^%s]+)$",
 	"^(حذف سایلنت) ([^%s]+)$",
 	"^(سایلنت کاربر)$",
